@@ -12,6 +12,26 @@ A secure, universal push notification package for React.js and Vue.js applicatio
 - 🔧 **Customizable**: Flexible configuration options
 - 📦 **Lightweight**: Minimal dependencies
 
+## Package Structure
+
+This package is organized into client and server parts for better separation of concerns:
+
+- Client-side imports (React/Vue components):
+  ```javascript
+  // ESM
+  import { usePushNotifications } from 'universal-push-notifications';
+  // or CommonJS
+  const { usePushNotifications } = require('universal-push-notifications');
+  ```
+
+- Server-side imports (nodejs/express applications):
+  ```javascript
+  // ESM
+  import { NotificationServer } from 'universal-push-notifications/server';
+  // or CommonJS
+  const { NotificationServer } = require('universal-push-notifications/server');
+  ```
+
 ## Installation
 
 ```bash
@@ -25,7 +45,7 @@ yarn add universal-push-notifications
 ### 1. Generate VAPID Keys
 
 ```javascript
-const { NotificationServer } = require('universal-push-notifications');
+const { NotificationServer } = require('universal-push-notifications/server');
 
 // Generate keys (run once, store securely)
 const vapidKeys = NotificationServer.generateVapidKeys();
@@ -37,7 +57,8 @@ console.log(vapidKeys);
 
 ```javascript
 const express = require('express');
-const { NotificationServer } = require('universal-push-notifications');
+// Import server module specifically
+const { NotificationServer } = require('universal-push-notifications/server');
 
 const app = express();
 app.use(express.json());
