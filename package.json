@@ -1,6 +1,6 @@
 {
     "name": "universal-push-notifications",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "A secure, universal push notification package for React.js and Vue.js with server-side environment variable protection",
     "main": "dist/client/index.js",
     "module": "dist/client/index.esm.js",
