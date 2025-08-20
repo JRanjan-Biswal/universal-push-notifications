@@ -100,13 +100,12 @@ import { usePushNotifications } from 'universal-push-notifications';
 function NotificationComponent() {
   const {
     isSupported,
+    subscription,
     isSubscribed,
     permission,
     loading,
     error,
-    subscribe,
-    unsubscribe,
-    showTestNotification
+    subscribe
   } = usePushNotifications({
     apiEndpoint: '/api/notifications',
     debug: true
@@ -116,66 +115,107 @@ function NotificationComponent() {
     return <div>Push notifications not supported</div>;
   }
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div>
       <h3>Push Notifications</h3>
-      <p>Permission: {{ state.permission }}</p>
-    <p>Subscribed: {{ isSubscribed ? 'Yes' : 'No' }}</p>
-    
-    <p v-if="state.error" style="color: red">Error: {{ state.error }}</p>
-    
-    <button 
-      @click="subscribe" 
-      :disabled="state.loading || isSubscribed"
-    >
-      {{ state.loading ? 'Loading...' : 'Subscribe' }}
-    </button>
-    
-    <button 
-      @click="unsubscribe" 
-      :disabled="state.loading || !isSubscribed"
-    >
-      {{ state.loading ? 'Loading...' : 'Unsubscribe' }}
-    </button>
-    
-    <button 
-      @click="() => showTestNotification('Test', { body: 'This is a test!' })"
-      :disabled="!isSubscribed"
-    >
-      Test Notification
-    </button>
-  </div>
-</template>
+      <p>Current permission: {permission}</p>
+      
+      {!isSubscribed ? (
+        <button onClick={subscribe} disabled={loading}>
+          Enable Push Notifications
+        </button>
+      ) : (
+        <div>
+          <p>Notifications enabled!</p>
+          <pre>{JSON.stringify(subscription, null, 2)}</pre>
+        </div>
+      )}
+    </div>
+  );
+}
+```
 
-<script>
+### 5. Vue Usage
+
+```javascript
+// Component.js
 import { createPushNotifications } from 'universal-push-notifications';
 
 export default {
   setup() {
     const {
-      state,
+      isSupported,
+      subscription,
       isSubscribed,
-      subscribe,
-      unsubscribe,
-      showTestNotification
+      permission,
+      loading,
+      error,
+      subscribe
     } = createPushNotifications({
       apiEndpoint: '/api/notifications',
       debug: true
     });
 
     return {
-      state,
+      isSupported,
       isSubscribed,
+      permission,
+      loading,
+      error,
       subscribe,
-      unsubscribe,
-      showTestNotification
+      subscription
     };
   }
 };
-</script>
 ```
 
-### 6. Vue 2 Usage
+```vue
+<!-- Component.vue -->
+<template>
+  <div>
+    <h3>Push Notifications</h3>
+    
+    <div v-if="!isSupported">
+      Push notifications not supported
+    </div>
+    
+    <div v-else-if="loading">
+      Loading...
+    </div>
+    
+    <div v-else-if="error">
+      Error: {{ error }}
+    </div>
+    
+    <div v-else>
+      <p>Current permission: {{ permission }}</p>
+      
+      <button 
+        v-if="!isSubscribed" 
+        @click="subscribe" 
+        :disabled="loading"
+      >
+        Enable Push Notifications
+      </button>
+      
+      <div v-else>
+        <p>Notifications enabled!</p>
+        <pre>{{ JSON.stringify(subscription, null, 2) }}</pre>
+      </div>
+    </div>
+  </div>
+</template>
+```
+
+### 6. Send Notifications from Server
 
 ```vue
 <template>
@@ -223,9 +263,9 @@ export default createPushNotificationsVue2({
 </script>
 ```
 
-### 7. Send Notifications from Server
+<!-- ### 7. Send Notifications from Server
 
-```javascript
+```js
 // Send to all subscribers
 fetch('http://localhost:3000/api/notifications/send', {
   method: 'POST',
@@ -242,7 +282,7 @@ fetch('http://localhost:3000/api/notifications/send', {
     ]
   })
 });
-```
+``` -->
 
 ## Configuration Options
 
