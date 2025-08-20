@@ -1,0 +1,22 @@
+# Source files (keep only built files)
+src/
+examples/
+scripts/
+rollup.config.js
+
+# Development
+*.log
+.env*
+.DS_Store
+coverage/
+.nyc_output
+.vscode/
+.idea/
+
+# Git
+.git/
+.gitignore
+
+# CI
+.travis.yml
+.github/

@@ -1,0 +1,53 @@
+{
+    "name": "universal-push-notifications",
+    "version": "1.0.0",
+    "description": "A secure, universal push notification package for React.js and Vue.js with server-side environment variable protection",
+    "main": "dist/index.js",
+    "module": "dist/index.esm.js",
+    "types": "types/index.d.ts",
+    "scripts": {
+        "build": "npm run build:client",
+        "build:client": "rollup -c rollup.config.js",
+        "prepublishOnly": "npm run build"
+    },
+    "keywords": [
+        "push-notifications",
+        "react",
+        "vue",
+        "pwa",
+        "service-worker",
+        "web-push",
+        "notifications"
+    ],
+    "author": "Your Name",
+    "license": "MIT",
+    "dependencies": {
+        "web-push": "^3.6.7"
+    },
+    "peerDependencies": {
+        "react": ">=16.8.0",
+        "vue": ">=2.6.0 || >=3.0.0"
+    },
+    "peerDependenciesMeta": {
+        "react": {
+            "optional": true
+        },
+        "vue": {
+            "optional": true
+        }
+    },
+    "devDependencies": {
+        "@rollup/plugin-node-resolve": "^16.0.1",
+        "@types/web-push": "^3.6.3"
+    },
+    "files": [
+        "dist/",
+        "types/",
+        "public/",
+        "README.md"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/JRanjan-Biswal/universal-push-notifications.git"
+    }
+}
